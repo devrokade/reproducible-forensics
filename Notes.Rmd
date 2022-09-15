@@ -1,0 +1,31 @@
+---
+title: "Untitled"
+author: "Wangqian Ju"
+date: "4/19/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+### Key words
+
++   algorithm
++   "implement(ed)?"
++   analysis
++   method
++   comparison
++   match
+
+
+### analysis
+
+access to data/scripts that -> redo the analysis
+software/versions
+proprietory 
+
+### algorithm
+
+code/data -> recreate results

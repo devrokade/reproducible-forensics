@@ -96,4 +96,46 @@ get_paper_info2 <- function(url, nth_child) {
 
 }
 
+extract_page_source <- function(browser,
+                                url,
+                                wiley_check_list,
+                                selector = ".creative-work__title",
+                                site_url = "https://onlinelibrary.wiley.com",
+                                doi_prefix = "/doi/abs/") {
 
+  browser$navigate(url)
+  pagesource <- browser$getPageSource()
+  html <- read_html(pagesource[[1]])
+
+  links <- html %>%
+    html_elements(".creative-work__title") %>%
+    html_element("a") %>%
+    html_attr("href")
+
+  child_urls <- sapply(links, function(link) {
+    if (!str_detect(link, "https")) {
+      link <- paste0(site_url, link)
+    }
+    str_replace(link, '/doi/full/', '/doi/abs/')
+  })
+
+  # dois <- links %>% str_replace("/doi/full/", "")
+  # current_doi <- str_replace(url, paste0(site_url, doi_prefix), "")
+
+  for (child_url in child_urls) {
+    if (is.null(wiley_check_list[[child_url]])) {
+      wiley_check_list[[child_url]] <- list(count = 1,
+                                            to_be_checked = TRUE)
+    } else {
+      wiley_check_list[[child_url]]$count <- wiley_check_list[[url]]$count + 1
+    }
+  }
+
+  wiley_check_list[[url]]$to_be_checked <- FALSE
+
+  result <- list(tb = tibble(url = url,
+                             page_source = pagesource,
+                             child_url = list(child_urls)),
+                 updated_check_list = wiley_check_list)
+  return( result )
+}

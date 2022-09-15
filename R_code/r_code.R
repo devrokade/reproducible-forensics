@@ -3,7 +3,6 @@ library(polite)
 library(rvest)
 library(tidyverse)
 library(assertthat)
-
 library(here)
 
 i_am("R_code/r_code.R")
@@ -40,7 +39,7 @@ JFS_papers <- readRDS(here("data", "JFS_2020-2021.rds"))
 papers <- do.call(rbind, JFS_papers$data)
 
 
-
+#main-content :nth-child(4) .page-range span:nth-child(2)
 
 
 
